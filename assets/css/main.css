@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+
+    html,
+    body {
+        font-family: 'Montserrat', sans-serif !important;
+    }
+}
+
+
+
+@layer components {
+    .p-inputtext {
+        background: transparent !important;
+    }
+
+    .p-float-label input.p-filled~label {
+        background: #17161A !important;
+    }
+
+    .p-toast .p-toast-message .p-toast-message-content {
+        padding: .5rem !important;
+    }
+
+    .p-paginator .p-dropdown {
+        height: auto !important;
+    }
+}
