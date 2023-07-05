@@ -19,6 +19,8 @@
         <span>График работы</span>
         <span class="text-sm text-gray-400"> 10:00 - 22:00 без выходных </span>
       </div>
+      <span @click="$router.push('/politic')" class="text-xs cursor-pointer">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</span>
+      <span @click="$router.push('/vozvrat')" class="text-xs cursor-pointer">ПРАВИЛА ВОЗВРАТА</span>
     </div>
     <div class="hidden sm:block">
       <iframe
