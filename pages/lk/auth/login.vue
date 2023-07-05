@@ -13,6 +13,7 @@
       <button @click="onLogin" class="bg-green-500 p-3 rounded-md">
         Войти
       </button>
+      <span class="w-full text-center">Регистрация</span>
     </div>
   </div>
 </template>

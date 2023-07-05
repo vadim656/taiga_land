@@ -5,12 +5,11 @@
       <UIContainerCenter class="w-full justify-center sm:justify-between flex items-center gap-8">
         <div class="hidden sm:flex items-center gap-8 text-gray-300">
           <span class="cursor-pointer" @click="getURL('/')">Главная</span>
-          <span class="cursor-pointer">О нас</span>
           <span class="cursor-pointer" @click="getURL('/services')">SPA</span>
           <!-- <span>Маркет</span> -->
           <span class="cursor-pointer">Отзывы</span>
-          <span class="cursor-pointer">Клуб</span>
-          <span class="cursor-pointer">Контакты</span>
+          <span class="cursor-pointer" @click="getURL('/lk/auth/login')">Клуб</span>
+          <span class="cursor-pointer" @click="getURL('/contacts')">Контакты</span>
         </div>
         <div class="flex-col sm:flex-row items-center justify-center gap-4">
           <div class="flex flex-col text-sm w-full text-center">
