@@ -1,14 +1,16 @@
 <template>
   <div class="container mx-auto flex flex-col gap-12 pt-48">
-    <ClientOnly>
-      <iframe
-        :src="imgURL('re')"
-        frameborder="0"
-        type="application/pdf"
-        height="400"
-        >не удалось показать документ2</iframe
-      >
-    </ClientOnly>
+    <div class="flex items-start justify-center">
+      <ClientOnly>
+        <iframe
+          :src="imgURL('re')"
+          frameborder="0"
+          type="application/pdf"
+          height="400"
+          >не удалось показать документ2</iframe
+        >
+      </ClientOnly>
+    </div>
   </div>
 </template>
 

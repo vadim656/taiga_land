@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto flex flex-col gap-12 pt-48">
-    <UIContainerCenter class="flex flex-col gap-12">
+    <UIContainerCenter class="flex flex-col gap-12 px-2">
       <UIHeaderH3 class="text-white">Контакты</UIHeaderH3>
       <div class="flex flex-col">
         <span> Адрес: </span>

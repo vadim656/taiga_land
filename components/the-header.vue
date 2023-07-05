@@ -1,17 +1,62 @@
 <template>
   <div class="relative">
     <Toast />
-    <div class="absolute top-0 left-0 right-0 py-4 px-12 z-[7]">
-      <UIContainerCenter class="w-full justify-center sm:justify-between flex items-center gap-8">
+    <div class="absolute top-0 left-0 right-0 py-4 px-2 sm:px-12 z-[7]">
+      <UIContainerCenter class="w-full justify-between flex items-center gap-8">
         <div class="hidden sm:flex items-center gap-8 text-gray-300">
           <span class="cursor-pointer" @click="getURL('/')">Главная</span>
           <span class="cursor-pointer" @click="getURL('/services')">SPA</span>
           <!-- <span>Маркет</span> -->
           <span class="cursor-pointer">Отзывы</span>
-          <span class="cursor-pointer" @click="getURL('/lk/auth/login')">Клуб</span>
-          <span class="cursor-pointer" @click="getURL('/contacts')">Контакты</span>
+          <span class="cursor-pointer" @click="getURL('/lk/auth/login')"
+            >Клуб</span
+          >
+          <span class="cursor-pointer" @click="getURL('/contacts')"
+            >Контакты</span
+          >
         </div>
-        <div class="flex-col sm:flex-row items-center justify-center gap-4">
+        <!-- mobile mneu -->
+        <div class="sm:hidden flex">
+          <div @click="mobMenu = true" class="flex items-center gap-1">
+            МЕНЮ
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 9h16.5m-16.5 6.75h16.5"
+              />
+            </svg>
+          </div>
+          <div
+          v-if="mobMenu"
+            class="absolute top-0 left-0 right-0 w-full h-screen flex items-center justify-center bg-neutral-900/90 backdrop-blur-sm"
+          >
+            <div class="flex flex-col gap-3 text-xl">
+              <span class="cursor-pointer" @click="getURL('/')">Главная</span>
+              <span class="cursor-pointer" @click="getURL('/services')"
+                >SPA</span
+              >
+              <!-- <span>Маркет</span> -->
+              <span class="cursor-pointer">Отзывы</span>
+              <span class="cursor-pointer" @click="getURL('/lk/auth/login')"
+                >Клуб</span
+              >
+              <span class="cursor-pointer" @click="getURL('/contacts')"
+                >Контакты</span
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex-col sm:flex-row items-end sm:items-center sm:justify-center gap-4"
+        >
           <div class="flex flex-col text-sm w-full text-center">
             <span>г.Краснодар, Пашковская 41/1</span>
             <span class="font-bold">+7(993) 324-42-42</span>
@@ -231,7 +276,10 @@ const onSubmit = handleSubmit(values => {
 
 const step = ref(1)
 
+const mobMenu = ref(false)
+
 function getURL (url) {
+  mobMenu.value = false
   router.push(url)
 }
 
