@@ -2,7 +2,7 @@ FROM node:18.0.0
 
 ADD .output /webapp/.output
 
-EXPOSE 3001
+EXPOSE 3005
 
 WORKDIR /webapp/.output
 

@@ -6,7 +6,7 @@ services:
     container_name: rest_front
     command: [sh, -c, "yarn && yarn dev"]
     ports:
-      - "3001:3000"
+      - "3005:3000"
     working_dir: '/webapp'
     tty: true
     volumes:
