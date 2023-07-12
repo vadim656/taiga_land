@@ -264,7 +264,7 @@
 
           <div class="flex flex-col gap-4 w-full">
             <button
-              v-if="stepOrder == 1"
+              v-if="stepOrder == 1 && orderSetHeder.product.id && orderSetHeder.master.length && orderSetHeder.time.code"
               @click="stepOrder = 2"
               class="w-full p-3 rounded-md bg-green-600"
             >
