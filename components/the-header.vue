@@ -156,7 +156,7 @@
                   :key="ghost.id"
                   :data="ghost"
                   @closeModal="closeModal"
-                  @click="setMaster(ghost.id)"
+                  @click="setMaster2()"
                   class="cursor-pointer"
                   :class="
                     orderSetHeder.master == ghost.id ? '!bg-green-500' : ''
@@ -264,7 +264,12 @@
 
           <div class="flex flex-col gap-4 w-full">
             <button
-              v-if="stepOrder == 1 && orderSetHeder.product.id && orderSetHeder.master.length && orderSetHeder.time.code"
+              v-if="
+                stepOrder == 1 &&
+                orderSetHeder.product.id &&
+                orderSetHeder.master.length &&
+                orderSetHeder.time.code
+              "
               @click="stepOrder = 2"
               class="w-full p-3 rounded-md bg-green-600"
             >
@@ -291,7 +296,11 @@
             >
               Отправить
             </button>
-            <button v-if="stepOrder !== 3" @click="stepOrder = 3" class="w-full p-3 rounded-md text-sm">
+            <button
+              v-if="stepOrder !== 3"
+              @click="stepOrder = 3"
+              class="w-full p-3 rounded-md text-sm"
+            >
               Свяжитесь со мной
             </button>
             <span v-if="thank == true">
@@ -448,6 +457,14 @@ function setProduct (data) {
 
 function setMaster (data) {
   orderSetHeder.value.master = data
+  activeTab.value = 0
+}
+
+function setMaster2 () {
+  const masters = allMasters.value.map(x => x.id)
+  var rand = Math.floor(Math.random() * masters.length)
+  console.log('randor', masters[rand])
+  orderSetHeder.value.master = masters[rand]
   activeTab.value = 0
 }
 
