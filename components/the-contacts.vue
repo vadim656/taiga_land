@@ -22,10 +22,10 @@
       <span @click="$router.push('/politics')" class="text-xs cursor-pointer">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</span>
       <span @click="$router.push('/vozvrat')" class="text-xs cursor-pointer">ПРАВИЛА ВОЗВРАТА</span>
     </div>
-    <div class="hidden sm:block">
+    <!-- <div class="hidden sm:block">
       <iframe
         src="https://yandex.ru/map-widget/v1/?um=constructor%3A60da89df97e39d67e69369b73f3219ca7901bbb2f88c269d253c0fcef9e6dd98&amp;source=constructor"
-        width="901"
+        width="401"
         height="400"
         frameborder="0"
       ></iframe>
@@ -37,7 +37,7 @@
         height="400"
         frameborder="0"
       ></iframe>
-    </div>
+    </div> -->
   </div>
 </template>
 

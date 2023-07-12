@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col gap-12">
-    <div class="w-full grid grid-cols-2">
-      <div class="pt-48">
-        <div class="px-24">
+    <div class="w-full flex flex-col-reverse sm:grid  sm:grid-cols-2">
+      <div class="pt-8 sm:pt-48">
+        <div class="px-3 sm:px-24">
           <div v-if="IDService?.attributes" class="flex flex-col gap-12">
             <span class="text-4xl font-bold">{{
               IDService.attributes.Name
@@ -19,11 +19,12 @@
                 </div>
               </div>
               <div class="flex flex-col gap-4">
-                <span class="text-xl">Программа для тела</span>
-                <ul class="flex flex-col gap-2 list-disc">
+                <span class="text-xl">Программа:</span>
+                <ul class="flex flex-col gap-2 list-disc list-inside">
                   <li
                     v-for="item in IDService.attributes.Programm"
                     :key="item.id"
+                    class="text-sm"
                   >
                     {{ item.Name }}
                   </li>
@@ -62,14 +63,14 @@
             'https://api.zhivayataiga.ru' +
             IDService.attributes.Img.data[0].attributes.url
           "
-          class="w-full h-[800px] object-cover"
+          class="w-full h-full object-cover "
           alt=""
         />
         <img
           v-else
           src="/no-image.svg
       "
-          class="w-full h-[800px] object-cover"
+          class="w-full h-full object-cover "
           alt=""
         />
       </div>
