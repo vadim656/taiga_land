@@ -250,6 +250,7 @@
               />
               <label for="username">Имя</label>
             </span>
+           
             <span class="p-float-label w-full">
               <InputMask
                 id="ssn"
@@ -283,7 +284,12 @@
               Назад
             </button>
             <button
-              v-if="stepOrder == 2"
+              v-if="
+                stepOrder == 2 &&
+                orderSetHeder.user.name.length >= 3 &&
+                orderSetHeder.user.phone.length == 17 && 
+                !orderSetHeder.user.phone.includes('_')
+              "
               @click="handlerSendNote()"
               class="w-full p-3 rounded-md bg-green-600"
             >
