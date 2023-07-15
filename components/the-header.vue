@@ -736,7 +736,7 @@ async function handlerSendReq () {
 
 async function opalataTinek () {
   const token = {
-    Amount: 100000,
+    Amount: 200,
     OrderId: 'TokenExample',
     Password: 'z8ybza4e4awq0tl7',
     TerminalKey: '1683478494845DEMO'
@@ -750,33 +750,135 @@ async function opalataTinek () {
   }`
 
   let encrypted = CryptoJS.SHA256(tokenConcat).toString()
-  console.log('concat', encrypted)
   const fullMessege = {
     TerminalKey: '1683478494845DEMO',
-    Amount: '2',
-    OrderId: '432222222225',
+    Amount: 200,
+    OrderId: '432222222226',
     Token: encrypted,
     DATA: {
       Phone: '+71234567890',
       Email: 'a@test.com',
-      dataPayToCrm: {
-        name: '1',
-        price: '',
-        master: '1',
-        usluga: '210'
-      }
+      Name: '1',
+      Price: 200,
+      Master: '1',
+      Usluga: '210'
+    },
+    Receipt: {
+      Email: 'a@test.ru',
+      Phone: '+79031234567',
+      Taxation: 'osn',
+      Payments: {
+        Electronic: 200
+      },
+      Items: [
+        {
+          // AgentData: {
+          //   AgentSign: 'paying_agent',
+          //   OperationName: 'Позиция чека',
+          //   Phones: ['+790912312398'],
+          //   ReceiverPhones: ['+79221210697', '+79098561231'],
+          //   TransferPhones: ['+79221210697'],
+          //   OperatorName: 'Tinkoff',
+          //   OperatorAddress: 'г. Тольятти',
+          //   OperatorInn: '7710140679'
+          // },
+          Name: 'Наименование товара 1',
+          Price: 200,
+          Quantity: 1.0,
+          Amount: 200,
+          Tax: 'vat10',
+          MeasurementUnit: 'шт'
+        }
+      ]
+    }
+  }
+
+  const t = {
+    TerminalKey: 'TinkoffBankTest',
+    Amount: 50000,
+    OrderId: '21050',
+    Description: 'Подарочная карта на 1000 рублей',
+    Token: '2ED30E046136931431B5251B7C9A1EAC68DAB082203BD42676BA14A851359DF4',
+    DATA: { Phone: '+71234567890', Email: 'a@test.com' },
+    Receipt: {
+      Email: 'a@test.ru',
+      Phone: '+79031234567',
+      Taxation: 'osn',
+      Customer: 'TestCustomer',
+      CustomerInn: '1234567890',
+      Payments: {
+        Electronic: 50000,
+        Cash: 90000,
+        AdvancePayment: 0,
+        Credit: 0,
+        Provision: 0
+      },
+      AgentData: {
+        AgentSign: 'bank_paying_subagent',
+        OperationName: 'Чек',
+        Phones: ['+19221210697', '+19098561231'],
+        ReceiverPhones: ['+29221210697', '+29098561231'],
+        TransferPhones: ['+39221210697'],
+        OperatorName: 'Tinkoff',
+        OperatorAddress: 'г.Москва',
+        OperatorInn: '7710140679'
+      },
+      SupplierInfo: {
+        Phones: ['+49221210697', '+49098561231']
+      },
+      Items: [
+        {
+          AgentData: {
+            AgentSign: 'paying_agent',
+            OperationName: 'Позиция чека',
+            Phones: ['+790912312398'],
+            ReceiverPhones: ['+79221210697', '+79098561231'],
+            TransferPhones: ['+79221210697'],
+            OperatorName: 'Tinkoff',
+            OperatorAddress: 'г. Тольятти',
+            OperatorInn: '7710140679'
+          },
+          SupplierInfo: {
+            Phones: ['+79221210697', '+79098561231'],
+            Name: 'ООО Вендор товара',
+            Inn: '7710140679'
+          },
+          Name: 'Наименование товара 1',
+          Price: 10000,
+          Quantity: 1.0,
+          Amount: 10000,
+          Tax: 'vat10',
+          Ean13: '0123456789',
+          ShopCode: '12345',
+          MeasurementUnit: 'шт'
+        },
+        {
+          Name: 'Наименование товара 2',
+          Price: 20000,
+          Quantity: 2.0,
+          Amount: 40000,
+          Tax: 'vat20'
+        },
+        {
+          Name: 'Наименование товара 3',
+          Price: 30000,
+          Quantity: 3.0,
+          Amount: 90000,
+          Tax: 'vat10'
+        }
+      ]
     }
   }
 
   await fetch('https://securepay.tinkoff.ru/v2/Init', {
     method: 'POST',
-    data: JSON.stringify(fullMessege),
+    body: JSON.stringify(fullMessege),
     headers: {
       'Content-Type': 'application/json'
     }
   }).then(res => {
     if (res.status == '200') {
-      console.log('tinek res', res)
+      console.log('tinek res', res.PaymentURL)
     }
     console.log(res)
   })
