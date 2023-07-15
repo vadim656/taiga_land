@@ -17,6 +17,7 @@ export default defineNuxtConfig({
           href: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap",
         },
       ],
+      script: [{ src: 'https://securepay.tinkoff.ru/html/payForm/js/tinkoff_v2.js' }],
     },
   },
   modules: [

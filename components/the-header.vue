@@ -99,6 +99,9 @@
               <span class="text-sm">Закрыть</span>
             </div>
           </div>
+          <!-- //tinek -->
+          {{ stepOrder }}
+          <!-- //end tinek -->
           <div v-if="stepOrder == 1" class="flex flex-col gap-4 pb-12">
             <!-- //usluga -->
             <div @click="setActiveTab(1)" class="flex flex-col gap-4">
@@ -223,14 +226,6 @@
           </div>
           <div v-if="stepOrder == 2" class="flex flex-col gap-4 py-12">
             <span class="p-float-label w-full">
-              <InputText
-                id="username"
-                v-model="orderSetHeder.user.name"
-                class="w-full"
-              />
-              <label for="username">Имя</label>
-            </span>
-            <span class="p-float-label w-full">
               <InputMask
                 id="ssn"
                 v-model="orderSetHeder.user.phone"
@@ -240,6 +235,71 @@
               />
               <label for="ssn">Телефон</label>
             </span>
+            <form
+              name="t-payform"
+              onsubmit="pay(this); return false;"
+              class="grid grid-cols-1 gap-4"
+            >
+              <input
+                class="t-payform-row"
+                type="hidden"
+                name="terminalkey"
+                value="1683478494845"
+              />
+              <input
+                class="t-payform-row"
+                type="hidden"
+                name="frame"
+                value="true"
+              />
+              <input
+                class="t-payform-row"
+                type="hidden"
+                name="language"
+                value="ru"
+              />
+              <input
+                class="t-payform-row hidden"
+                type="text"
+                placeholder="Сумма заказа"
+                :value="testTin"
+                name="amount"
+                required
+              />
+              <input
+                class="t-payform-row hidden"
+                type="text"
+                placeholder="Номер заказа"
+                name="order"
+              />
+              <input
+                class="t-payform-row hidden"
+                type="text"
+                placeholder="Описание заказа"
+                name="description"
+              />
+              <input
+                class="t-payform-row"
+                type="text"
+                placeholder="ФИО плательщика"
+                v-model="orderSetHeder.user.name"
+                name="name"
+              />
+              <input
+                class="t-payform-row hidden"
+                type="text"
+                placeholder="E-mail"
+                name="email"
+              />
+              <input
+                class="t-payform-row"
+                type="text"
+                placeholder="Контактный телефон"
+                name="phone"
+                v-model="orderSetHeder.user.phone"
+              />
+              <input class="t-payform-row" type="submit" value="Оплатить" />
+            </form>
           </div>
           <div v-if="stepOrder == 3" class="flex flex-col gap-4 py-12">
             <span class="p-float-label w-full">
@@ -261,6 +321,7 @@
               />
               <label for="ssn">Телефон</label>
             </span>
+           
           </div>
 
           <div class="flex flex-col gap-4 w-full">
@@ -337,6 +398,8 @@ const router = useRouter()
 const store = userInfo()
 const visibleOrderModal = ref(false)
 const date = ref()
+
+const testTin = ref(3)
 
 const { handleSubmit, resetForm } = useForm()
 const { value, errorMessage } = useField('value', validateField)
