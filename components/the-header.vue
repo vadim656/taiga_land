@@ -250,7 +250,7 @@
                 class="t-payform-row"
                 type="hidden"
                 name="frame"
-                value="true"
+                value="false"
               />
               <input
                 class="t-payform-row"
@@ -321,9 +321,8 @@
               />
               <label for="ssn">Телефон</label>
             </span>
-           
           </div>
-
+          <div @click="opalataTinek" class="p-4 bg- red-200">tinek</div>
           <div class="flex flex-col gap-4 w-full">
             <button
               v-if="
@@ -728,6 +727,56 @@ async function handlerSendReq () {
         stepOrder.value = 1
         thank2.value = false
       }, 5000)
+    }
+    console.log(res)
+  })
+}
+
+//tinek pay
+
+async function opalataTinek () {
+  const token = {
+    Amount: 100000,
+    OrderId: 'TokenExample',
+    Password: 'z8ybza4e4awq0tl7',
+    TerminalKey: '1683478494845DEMO'
+  }
+
+  const tokenConcat = `${
+    token['Amount'].toString() +
+    token['OrderId'].toString() +
+    token['Password'].toString() +
+    token['TerminalKey'].toString()
+  }`
+
+  let encrypted = CryptoJS.SHA256(tokenConcat).toString()
+  console.log('concat', encrypted)
+  const fullMessege = {
+    TerminalKey: '1683478494845DEMO',
+    Amount: '2',
+    OrderId: '432222222225',
+    Token: encrypted,
+    DATA: {
+      Phone: '+71234567890',
+      Email: 'a@test.com',
+      dataPayToCrm: {
+        name: '1',
+        price: '',
+        master: '1',
+        usluga: '210'
+      }
+    }
+  }
+
+  await fetch('https://securepay.tinkoff.ru/v2/Init', {
+    method: 'POST',
+    data: JSON.stringify(fullMessege),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
+    if (res.status == '200') {
+      console.log('tinek res', res)
     }
     console.log(res)
   })
