@@ -100,7 +100,6 @@
             </div>
           </div>
           <!-- //tinek -->
-          {{ stepOrder }}
           <!-- //end tinek -->
           <div v-if="stepOrder == 1" class="flex flex-col gap-4 pb-12">
             <!-- //usluga -->
@@ -226,6 +225,14 @@
           </div>
           <div v-if="stepOrder == 2" class="flex flex-col gap-4 py-12">
             <span class="p-float-label w-full">
+              <InputText
+                id="username"
+                v-model="orderSetHeder.user.name"
+                class="w-full"
+              />
+              <label for="username">Имя</label>
+            </span>
+            <span class="p-float-label w-full">
               <InputMask
                 id="ssn"
                 v-model="orderSetHeder.user.phone"
@@ -235,71 +242,6 @@
               />
               <label for="ssn">Телефон</label>
             </span>
-            <form
-              name="t-payform"
-              onsubmit="pay(this); return false;"
-              class="grid grid-cols-1 gap-4"
-            >
-              <input
-                class="t-payform-row"
-                type="hidden"
-                name="terminalkey"
-                value="1683478494845"
-              />
-              <input
-                class="t-payform-row"
-                type="hidden"
-                name="frame"
-                value="false"
-              />
-              <input
-                class="t-payform-row"
-                type="hidden"
-                name="language"
-                value="ru"
-              />
-              <input
-                class="t-payform-row hidden"
-                type="text"
-                placeholder="Сумма заказа"
-                :value="testTin"
-                name="amount"
-                required
-              />
-              <input
-                class="t-payform-row hidden"
-                type="text"
-                placeholder="Номер заказа"
-                name="order"
-              />
-              <input
-                class="t-payform-row hidden"
-                type="text"
-                placeholder="Описание заказа"
-                name="description"
-              />
-              <input
-                class="t-payform-row"
-                type="text"
-                placeholder="ФИО плательщика"
-                v-model="orderSetHeder.user.name"
-                name="name"
-              />
-              <input
-                class="t-payform-row hidden"
-                type="text"
-                placeholder="E-mail"
-                name="email"
-              />
-              <input
-                class="t-payform-row"
-                type="text"
-                placeholder="Контактный телефон"
-                name="phone"
-                v-model="orderSetHeder.user.phone"
-              />
-              <input class="t-payform-row" type="submit" value="Оплатить" />
-            </form>
           </div>
           <div v-if="stepOrder == 3" class="flex flex-col gap-4 py-12">
             <span class="p-float-label w-full">
@@ -322,8 +264,6 @@
               <label for="ssn">Телефон</label>
             </span>
           </div>
-          <div @click="opalataTinek" class="p-4 bg- red-200">tinek</div>
-          <div @click="oplalTTTT">sdsssss</div>
           <div class="flex flex-col gap-4 w-full">
             <button
               v-if="
@@ -393,6 +333,7 @@ import { ALL_SERVICES, ALL_MASTERS } from '@/gql/SERVICES'
 import { GET_SETTING_ORDER, CREATE_CLIENT_NOTE } from '@/gql/ORDER'
 import { useToast } from 'primevue/usetoast'
 import { useField, useForm } from 'vee-validate'
+import { v4 as uuidv4 } from 'uuid'
 import { userInfo } from '@/store'
 const router = useRouter()
 const store = userInfo()
@@ -523,6 +464,8 @@ function setProduct (data) {
   console.log(cabinets)
   orderSetHeder.value.product = {
     id: data.id,
+    price: data.attributes.Price,
+    name: data.attributes.Name,
     cabinets: cabinets,
     timer: data.attributes.UnitValue
   }
@@ -735,12 +678,12 @@ async function handlerSendReq () {
 
 //tinek pay
 
-async function opalataTinek () {
+async function opalataTinek (UIDS, price, name) {
   const token = {
-    Amount: 200,
-    OrderId: 'TokenExample',
-    Password: 'z8ybza4e4awq0tl7',
-    TerminalKey: '1683478494845DEMO'
+    Amount: Number(price * 100),
+    OrderId: UIDS,
+    Password: 'tp8c5kl9euj23vs5',
+    TerminalKey: '1683478494845'
   }
 
   const tokenConcat = `${
@@ -751,42 +694,33 @@ async function opalataTinek () {
   }`
 
   let encrypted = CryptoJS.SHA256(tokenConcat).toString()
+
   const fullMessege = {
-    TerminalKey: '1683478494845DEMO',
-    Amount: 200,
-    OrderId: '432222222226',
+    TerminalKey: '1683478494845',
+    Amount: Number(price * 100),
+    OrderId: UIDS,
     Token: encrypted,
     DATA: {
       Phone: '+71234567890',
-      Email: 'a@test.com',
-      Name: '1',
-      Price: 200,
+      // Email: 'a@test.com',
+      Name: name.toString(),
+      Price: Number(price * 100),
       Master: '1',
       Usluga: '210'
     },
     Receipt: {
-      Email: 'a@test.ru',
-      Phone: '+79031234567',
+      Email: 'mmpcapital@mail.ru',
+      Phone: '+79069314242',
       Taxation: 'osn',
       Payments: {
-        Electronic: 200
+        Electronic: Number(price * 100)
       },
       Items: [
         {
-          // AgentData: {
-          //   AgentSign: 'paying_agent',
-          //   OperationName: 'Позиция чека',
-          //   Phones: ['+790912312398'],
-          //   ReceiverPhones: ['+79221210697', '+79098561231'],
-          //   TransferPhones: ['+79221210697'],
-          //   OperatorName: 'Tinkoff',
-          //   OperatorAddress: 'г. Тольятти',
-          //   OperatorInn: '7710140679'
-          // },
-          Name: 'Наименование товара 1',
-          Price: 200,
+          Name: name.toString(),
+          Price: Number(price * 100),
           Quantity: 1.0,
-          Amount: 200,
+          Amount: Number(price * 100),
           Tax: 'vat10',
           MeasurementUnit: 'шт'
         }
@@ -794,56 +728,23 @@ async function opalataTinek () {
     }
   }
 
-  await fetch('https://securepay.tinkoff.ru/v2/Init', {
+  const { data } = await useFetch('https://securepay.tinkoff.ru/v2/Init', {
     method: 'POST',
     body: JSON.stringify(fullMessege),
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(res => {
-    if (res.status == '200') {
-      console.log('tinek res', res.PaymentURL)
-    }
-    console.log(res)
   })
-}
+  setTimeout(() => {
+    window.open(data.value.PaymentURL, '_blank')
+  }, 200)
 
-async function oplalTTTT () {
-  const token = {
-    OrderId: '432222222226',
-    Password: 'z8ybza4e4awq0tl7',
-    TerminalKey: '1683478494845DEMO'
-  }
-
-  const tokenConcat = `${
-    token['OrderId'].toString() +
-    token['Password'].toString() +
-    token['TerminalKey'].toString()
-  }`
-
-  let encrypted = CryptoJS.SHA256(tokenConcat).toString()
-  const fullMessege = {
-    TerminalKey: '1683478494845DEMO',
-    OrderId: '432222222226',
-    Token: encrypted
-  }
-
-  await fetch('https://securepay.tinkoff.ru/v2/CheckOrder', {
-    method: 'POST',
-    body: JSON.stringify(fullMessege),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => {
-    if (res.status == '200') {
-      console.log('tinek ok res', res)
-    }
-    console.log(res)
-  })
+  console.log('fetch', data.value.PaymentURL)
 }
 
 function handlerSendNote () {
-  console.log('handlerSendNote', orderSetHeder.value)
+  const UID = uuidv4()
+  const UIDS = UID.replaceAll('-', '')
   // start
   let time1 = orderSetHeder.value.time
   let h1 = String(time1.name).split(':')[0]
@@ -866,7 +767,7 @@ function handlerSendNote () {
   servicesInNote.push(Number(orderSetHeder.value.product.id))
   const noteData = {
     DATE: timer1,
-    NOTE: 'Заказ с сайта',
+    NOTE: `Заказ с сайта # ${UIDS}`,
     DATEEND: timer2,
     SERVICES: servicesInNote,
     FIO: orderSetHeder.value.user.name,
@@ -874,13 +775,12 @@ function handlerSendNote () {
     CABINET: Number(3),
     MASTER: Number(orderSetHeder.value.master)
   }
-  console.log('note', noteData)
 
   ///////////////////
 
   sendNote({
     DATE: timer1,
-    NOTE: 'Заказ с сайта',
+    NOTE: `Заказ с сайта # ${UIDS}`,
     DATEEND: timer2,
     SERVICES: servicesInNote,
     FIO: orderSetHeder.value.user.name,
@@ -888,6 +788,11 @@ function handlerSendNote () {
     CABINET: Number(3),
     MASTER: Number(orderSetHeder.value.master)
   })
+  opalataTinek(
+    UIDS,
+    orderSetHeder.value.product.price,
+    orderSetHeder.value.product.name
+  )
 }
 </script>
 

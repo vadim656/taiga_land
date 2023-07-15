@@ -111,7 +111,7 @@
     </UIContainerCenter>
     <UIContainerCenter class="h-full min-h-[400px] flex flex-col gap-12">
       <UIHeaderH3 class="text-white">Наши мастера</UIHeaderH3>
-      <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
         <MainpageSotrudnik
           v-for="(item, i) in cotr"
           :key="i"
@@ -148,6 +148,12 @@ const cotr = ref([
   {
     name: 'Старостина Ольга',
     img: 'sot4',
+    napr: 'Мастер спа-программ'
+  }
+  ,
+  {
+    name: 'Щербакова Юлия',
+    img: 'sot5',
     napr: 'Мастер спа-программ'
   }
 ])
