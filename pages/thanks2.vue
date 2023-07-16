@@ -3,6 +3,8 @@
     class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-12"
   >
     <span class="text-2xl">Ваш заказ</span>
+    <pre>{{ $route }}</pre>
+    
     <div class="flex flex-col gap-2" v-if="viewCheck">
       <span
         >Имя:<br />
