@@ -30,3 +30,12 @@
         height: auto !important;
     }
 }
+
+.p-component {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.p-inputtext {
+    font-family: 'Montserrat', sans-serif !important;
+
+}

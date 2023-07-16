@@ -15,6 +15,7 @@
     "@types/node": "^18",
     "@vueuse/nuxt": "^10.1.2",
     "autoprefixer": "^10.4.14",
+    "dayjs-nuxt": "^1.1.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "nuxt": "^3.4.3",

@@ -31,7 +31,14 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/strapi",
+    "dayjs-nuxt"
   ],
+  dayjs: {
+    locales: ["ru"],
+    plugins: ["relativeTime", "utc", "timezone"],
+    defaultLocale: "ru",
+    defaultTimezone: "Russia/Moscow",
+  },
   runtimeConfig: {
     public: {
       graphqlURL: "https://api.zhivayataiga.ru/graphql",

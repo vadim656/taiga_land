@@ -11,6 +11,7 @@
         <div class="hidden sm:flex items-center gap-8 text-gray-300">
           <span class="cursor-pointer" @click="getURL('/')">Главная</span>
           <span class="cursor-pointer" @click="getURL('/services')">SPA</span>
+
           <!-- <span>Маркет</span> -->
           <span class="cursor-pointer">Отзывы</span>
           <span class="cursor-pointer" @click="getURL('/lk/auth/login')"
@@ -20,6 +21,9 @@
             >Контакты</span
           >
         </div>
+        <button @click="visibleSert = true" type="">
+          Подарочные сертификаты
+        </button>
         <!-- mobile mneu -->
         <div class="sm:hidden flex">
           <div @click="mobMenu = true" class="flex items-center gap-1">
@@ -325,6 +329,55 @@
         </div>
       </div>
     </div>
+    <Dialog
+      v-model:visible="visibleSert"
+      modal
+      header="Создание подарочного сертификата"
+      :style="{ width: '30vw' }"
+    >
+      <div class="w-full flex flex-col gap-2 items-center justify-center p-4">
+        <span class="p-float-label">
+          <!-- <InputNumber
+            v-model="valueSert"
+            inputId="minmax-buttons"
+            mode="decimal"
+            :step="100"
+            :min="2500"
+            :max="50000"
+          /> -->
+          <InputNumber
+            v-model="valueSert"
+            inputId="minmax-buttons"
+            mode="decimal"
+            :step="1"
+            :min="2"
+            :max="50000"
+          />
+        </span>
+        <span class="text-xs">Введите сумму кратную 100 и не более 50 000</span>
+      </div>
+      <template #footer>
+        <Button
+          label="Отменить"
+          icon="pi pi-times"
+          @click="visibleSert = false"
+          autofocus
+          text
+        />
+        <!-- <Button
+          v-if="valueSert % 100 === 0"
+          label="Оплатить"
+          icon="pi pi-check"
+          @click="createSert()"
+        /> -->
+        <Button
+          v-if="valueSert % 2 === 0"
+          label="Оплатить"
+          icon="pi pi-check"
+          @click="createSert()"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -341,7 +394,8 @@ const visibleOrderModal = ref(false)
 const date = ref()
 
 const testTin = ref(3)
-
+const visibleSert = ref(false)
+const valueSert = ref(2500)
 const { handleSubmit, resetForm } = useForm()
 const { value, errorMessage } = useField('value', validateField)
 const toast = useToast()
@@ -353,6 +407,73 @@ function validateField (value) {
     return 'City is required.'
   }
   return true
+}
+
+async function createSert () {
+  const UID = uuidv4()
+  const UIDS = UID.replaceAll('-', '')
+  const token = {
+    Amount: Number(valueSert.value * 100),
+    OrderId: UIDS,
+    Password: 'z8ybza4e4awq0tl7',
+    TerminalKey: '1683478494845DEMO'
+    // Password: 'tp8c5kl9euj23vs5',
+    // TerminalKey: '1683478494845'
+  }
+
+  const tokenConcat = `${
+    token['Amount'].toString() +
+    token['OrderId'].toString() +
+    token['Password'].toString() +
+    token['TerminalKey'].toString()
+  }`
+
+  let encrypted = CryptoJS.SHA256(tokenConcat).toString()
+
+  const fullMessege = {
+    TerminalKey: '1683478494845DEMO',
+    Amount: Number(valueSert.value * 100),
+    OrderId: UIDS,
+    Token: encrypted,
+    SuccessURL:'https://zhivayataiga.ru/thanks2',
+    DATA: {
+      Phone: '+71234567890',
+      Name: `Сертификат № ${UIDS}`,
+      Type: 2
+    },
+    Receipt: {
+      Email: 'mmpcapital@mail.ru',
+      Phone: '+79069314242',
+      Taxation: 'osn',
+      Payments: {
+        Electronic: Number(valueSert.value * 100)
+      },
+      Items: [
+        {
+          Name: `Сертификат № ${UIDS}`,
+          Price: Number(valueSert.value * 100),
+          Quantity: 1.0,
+          Amount: Number(valueSert.value * 100),
+          Tax: 'vat0',
+          MeasurementUnit: 'шт'
+        }
+      ]
+    }
+  }
+
+  const { data } = await useFetch('https://securepay.tinkoff.ru/v2/Init', {
+    method: 'POST',
+    body: JSON.stringify(fullMessege),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  setTimeout(() => {
+    window.open(data.value.PaymentURL, '_blank')
+  }, 200)
+
+  
 }
 
 const orderSetHeder = ref({
@@ -682,8 +803,10 @@ async function opalataTinek (UIDS, price, name) {
   const token = {
     Amount: Number(price * 100),
     OrderId: UIDS,
-    Password: 'tp8c5kl9euj23vs5',
-    TerminalKey: '1683478494845'
+    Password: 'z8ybza4e4awq0tl7',
+    TerminalKey: '1683478494845DEMO'
+    // Password: 'tp8c5kl9euj23vs5',
+    // TerminalKey: '1683478494845'
   }
 
   const tokenConcat = `${
@@ -696,7 +819,7 @@ async function opalataTinek (UIDS, price, name) {
   let encrypted = CryptoJS.SHA256(tokenConcat).toString()
 
   const fullMessege = {
-    TerminalKey: '1683478494845',
+    TerminalKey: '1683478494845DEMO',
     Amount: Number(price * 100),
     OrderId: UIDS,
     Token: encrypted,
@@ -721,7 +844,7 @@ async function opalataTinek (UIDS, price, name) {
           Price: Number(price * 100),
           Quantity: 1.0,
           Amount: Number(price * 100),
-          Tax: 'vat10',
+          Tax: 'osn',
           MeasurementUnit: 'шт'
         }
       ]
