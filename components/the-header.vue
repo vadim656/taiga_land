@@ -844,7 +844,7 @@ async function opalataTinek (UIDS, price, name) {
           Price: Number(price * 100),
           Quantity: 1.0,
           Amount: Number(price * 100),
-          Tax: 'osn',
+          Tax: 'vat0',
           MeasurementUnit: 'шт'
         }
       ]
