@@ -12,8 +12,8 @@
           alt=""
         />
       </div>
-      <div class="flex flex-col gap-2 justify-center items-center">
-        <span class="text-2xl sm:text-[46px] font-bold text-center"
+      <div class="flex flex-col gap-4 justify-center items-center ">
+        <span class="text-2xl sm:text-[46px] font-bold text-center sm:leading-[54px]"
           >Подарочный сертификат <br />
           на сумму</span
         >
@@ -129,10 +129,10 @@ onMounted(() => {
   setTimeout(() => {
     if (route.query.Success == 'true') {
       console.log('true')
-      createSertAPI({
-        N: `Сертификат ${route.query.OrderId}`,
-        P: Number(route.query.Amount * 0.01)
-      })
+      // createSertAPI({
+      //   N: `Сертификат ${route.query.OrderId}`,
+      //   P: Number(route.query.Amount * 0.01)
+      // })
     } else {
       console.log('false', route.query.Success)
     }
