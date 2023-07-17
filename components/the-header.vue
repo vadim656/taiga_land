@@ -21,7 +21,7 @@
             >Контакты</span
           >
         </div>
-        <button @click="visibleSert = true" type="">
+        <button class="hidden sm:flex" @click="visibleSert = true" type="">
           Подарочные сертификаты
         </button>
         <!-- mobile mneu -->
@@ -52,6 +52,9 @@
               <span class="cursor-pointer" @click="getURL('/services')"
                 >SPA</span
               >
+              <button @click="visibleSertMob" type="">
+                Подарочные сертификаты
+              </button>
               <!-- <span>Маркет</span> -->
               <span class="cursor-pointer">Отзывы</span>
               <span class="cursor-pointer" @click="getURL('/lk/auth/login')"
@@ -333,7 +336,7 @@
       v-model:visible="visibleSert"
       modal
       header="Создание подарочного сертификата"
-      :style="{ width: '30vw' }"
+      class="w-[90vw] sm:w-[30vw]"
     >
       <div class="w-full flex flex-col gap-2 items-center justify-center p-4">
         <span class="p-float-label">
@@ -357,25 +360,23 @@
         <span class="text-xs">Введите сумму кратную 100 и не более 50 000</span>
       </div>
       <template #footer>
-        <Button
+        <div class="flex justify-end">
+          <Button
           label="Отменить"
           icon="pi pi-times"
           @click="visibleSert = false"
           autofocus
           text
         />
-        <!-- <Button
-          v-if="valueSert % 100 === 0"
-          label="Оплатить"
-          icon="pi pi-check"
-          @click="createSert()"
-        /> -->
+
         <Button
           v-if="valueSert % 2 === 0"
           label="Оплатить"
           icon="pi pi-check"
           @click="createSert()"
         />
+        </div>
+        
       </template>
     </Dialog>
   </div>
@@ -402,6 +403,12 @@ const toast = useToast()
 
 const stepOrder = ref(1)
 
+function visibleSertMob() {
+  visibleSert.value = true
+  mobMenu.value = false
+}
+
+
 function validateField (value) {
   if (!value) {
     return 'City is required.'
@@ -415,10 +422,10 @@ async function createSert () {
   const token = {
     Amount: Number(valueSert.value * 100),
     OrderId: UIDS,
-    Password: 'z8ybza4e4awq0tl7',
-    TerminalKey: '1683478494845DEMO'
-    // Password: 'tp8c5kl9euj23vs5',
-    // TerminalKey: '1683478494845'
+    // Password: 'z8ybza4e4awq0tl7',
+    // TerminalKey: '1683478494845DEMO'
+    Password: 'tp8c5kl9euj23vs5',
+    TerminalKey: '1683478494845'
   }
 
   const tokenConcat = `${
@@ -431,11 +438,12 @@ async function createSert () {
   let encrypted = CryptoJS.SHA256(tokenConcat).toString()
 
   const fullMessege = {
-    TerminalKey: '1683478494845DEMO',
+    TerminalKey: '1683478494845',
     Amount: Number(valueSert.value * 100),
     OrderId: UIDS,
     Token: encrypted,
-    SuccessURL:'https://zhivayataiga.ru/thanks2',
+    SuccessURL:
+      'https://zhivayataiga.ru/thanks2?Success=${Success}&ErrorCode=${ErrorCode}&OrderId=${OrderId}&PaymentId=${PaymentId}&Amount=${Amount}',
     DATA: {
       Phone: '+71234567890',
       Name: `Сертификат № ${UIDS}`,
@@ -454,7 +462,7 @@ async function createSert () {
           Price: Number(valueSert.value * 100),
           Quantity: 1.0,
           Amount: Number(valueSert.value * 100),
-          Tax: 'vat0',
+          Tax: 'none',
           MeasurementUnit: 'шт'
         }
       ]
@@ -472,8 +480,6 @@ async function createSert () {
   setTimeout(() => {
     window.open(data.value.PaymentURL, '_blank')
   }, 200)
-
-  
 }
 
 const orderSetHeder = ref({

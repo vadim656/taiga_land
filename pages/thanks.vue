@@ -44,6 +44,9 @@ definePageMeta({
 const dayjs = useDayjs()
 const route = useRoute()
 
+
+
+
 const { result: Check, onResult: updateStatus } = useQuery(
   gql`
     query GET_ORDER($UID: String) {

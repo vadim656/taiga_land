@@ -34,6 +34,7 @@
     "@vueuse/components": "^9.13.0",
     "@vueuse/core": "^9.12.0",
     "chart.js": "^4.2.1",
+    "html2canvas": "^1.4.1",
     "next-auth": "4.21.1",
     "pinia": "^2.0.33",
     "primeicons": "^6.0.1",
