@@ -352,8 +352,8 @@
             v-model="valueSert"
             inputId="minmax-buttons"
             mode="decimal"
-            :step="1"
-            :min="2"
+            :step="100"
+            :min="2500"
             :max="50000"
           />
         </span>
@@ -370,7 +370,7 @@
         />
 
         <Button
-          v-if="valueSert % 2 === 0"
+          v-if="valueSert % 100 === 0"
           label="Оплатить"
           icon="pi pi-check"
           @click="createSert()"
