@@ -129,10 +129,10 @@ onMounted(() => {
   setTimeout(() => {
     if (route.query.Success == 'true') {
       console.log('true')
-      // createSertAPI({
-      //   N: `Сертификат ${route.query.OrderId}`,
-      //   P: Number(route.query.Amount * 0.01)
-      // })
+      createSertAPI({
+        N: `Сертификат ${route.query.OrderId}`,
+        P: Number(route.query.Amount * 0.01)
+      })
     } else {
       console.log('false', route.query.Success)
     }
