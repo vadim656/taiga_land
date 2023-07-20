@@ -3,17 +3,24 @@
     class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-12 pt-32"
   >
     <!-- sert -->
-    <div ref="sert" class="p-4  bg-neutral-700 flex flex-col gap-12">
-      <div class="w-full flex  items-start justify-center sm:justify-between gap-8 sm:gap-52">
-        <img class="w-auto h-[60px] sm:h-[140px]" src="../assets/img/logo.png" alt="" />
+    <div ref="sert" class="p-4 bg-neutral-700 flex flex-col gap-12">
+      <div
+        class="w-full flex items-start justify-center sm:justify-between gap-8 sm:gap-52"
+      >
+        <img
+          class="w-auto h-[60px] sm:h-[140px]"
+          src="../assets/img/logo.png"
+          alt=""
+        />
         <img
           class="w-auto h-[60px] sm:h-[130px]"
           src="../assets/img/logo_siberika.png"
           alt=""
         />
       </div>
-      <div class="flex flex-col gap-4 justify-center items-center ">
-        <span class="text-2xl sm:text-[46px] font-bold text-center sm:leading-[54px]"
+      <div class="flex flex-col gap-4 justify-center items-center">
+        <span
+          class="text-2xl sm:text-[46px] font-bold text-center sm:leading-[54px]"
           >Подарочный сертификат <br />
           на сумму</span
         >
@@ -35,7 +42,13 @@
       </div>
     </div>
 
-    <button @click="downloadSert" class="px-3 py-2 bg-green-600 rounded-md" type="">Скачать</button>
+    <button
+      @click="downloadSert"
+      class="px-3 py-2 bg-green-600 rounded-md"
+      type=""
+    >
+      Скачать
+    </button>
     <button @click="$router.push('/')" type="">Вернуться на главную</button>
   </div>
 </template>
@@ -76,6 +89,36 @@ const { mutate: createSertAPI, onDone: GetTG } = useMutation(gql`
 
 GetTG(() => {
   GetTelegram()
+})
+
+const { result: ValidID, onResult: setSert } = useQuery(
+  gql`
+    query PRODUCT_ID($ID: String) {
+      products(filters: { Name: { containsi: $ID } }) {
+        data {
+          attributes {
+            Name
+          }
+        }
+      }
+    }
+  `,
+  () => ({
+    ID: route.query.OrderId
+  })
+)
+
+setSert(res => {
+  console.log('setSert', res.data.products.data.length)
+  if (route.query.Success == 'true' && res.data.products.data.length === 0) {
+    console.log('true')
+    createSertAPI({
+      N: `Сертификат ${route.query.OrderId}`,
+      P: Number(route.query.Amount * 0.01)
+    })
+  } else {
+    console.log('false', route.query.Success)
+  }
 })
 
 async function GetTelegram () {
@@ -124,20 +167,6 @@ async function downloadSert () {
 
   console.log('done')
 }
-
-onMounted(() => {
-  setTimeout(() => {
-    if (route.query.Success == 'true') {
-      console.log('true')
-      createSertAPI({
-        N: `Сертификат ${route.query.OrderId}`,
-        P: Number(route.query.Amount * 0.01)
-      })
-    } else {
-      console.log('false', route.query.Success)
-    }
-  }, 200)
-})
 </script>
 
 <style scoped></style>
